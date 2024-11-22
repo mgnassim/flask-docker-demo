@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       # Step 1: Checkout code
       - name: Checkout code
@@ -33,7 +34,14 @@ jobs:
       # Step 5: Deploy to Server (simulated here)
       - name: Deploy to Server
         run: |
-          # In a real setup, you'd SSH to your server and run Docker commands to deploy the app
           echo "Deploying to server..."
-          # Example: ssh user@server "docker pull flask-docker-demo && docker-compose up -d"
-          # Here you might want to set up SSH keys for secure server login, but for now we'll just simulate
+          echo "Pull the latest Docker image and start the container"
+
+          # Simulating deployment (replace with actual deployment commands)
+          echo "Running docker-compose up -d..."
+
+          # In a real scenario, SSH into the server and execute Docker commands:
+          # ssh user@your-server "cd /path/to/app && docker-compose pull && docker-compose up -d"
+
+          # Since this is a simulation, we'll stop here:
+          echo "Deployed!"
