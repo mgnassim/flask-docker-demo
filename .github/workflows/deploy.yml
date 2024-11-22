@@ -49,7 +49,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Local deployment
+      # Step 1: Install Docker and Docker Compose
+      - name: Install Docker and Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker.io
+          sudo apt-get install -y docker-compose
+
+      # Step 2: Set up Docker
       - name: Set up Docker
         run: |
           # Build and run Docker container locally
