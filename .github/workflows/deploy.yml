@@ -41,15 +41,15 @@ jobs:
         run: |
           docker build -t flask-docker-demo .
 
-deploy:
-  runs-on: ubuntu-latest
-  needs: test
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    # Local deployment
-    - name: Set up Docker
-      run: |
-        # Build and run Docker container locally
-        docker-compose up -d
+      # Local deployment
+      - name: Set up Docker
+        run: |
+          # Build and run Docker container locally
+          docker-compose up -d
