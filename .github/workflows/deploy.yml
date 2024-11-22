@@ -53,6 +53,9 @@ jobs:
       - name: Install Docker and Docker Compose
         run: |
           sudo apt-get update
+          # Uninstall conflicting packages (containerd, containerd.io)
+          sudo apt-get remove -y containerd containerd.io || true
+          # Install Docker and Docker Compose
           sudo apt-get install -y docker.io
           sudo apt-get install -y docker-compose
 
