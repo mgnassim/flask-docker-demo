@@ -26,12 +26,22 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Step 4: Build Docker Image
+      # Step 4: Run Python syntax check
+      - name: Check Python Syntax
+        run: |
+          python -m py_compile $(find . -name "*.py")
+
+      # Step 5: Run tests (optional, if you have pytest)
+      - name: Run tests
+        run: |
+          pytest test_app.py
+
+      # Step 6: Build Docker Image
       - name: Build Docker Image
         run: |
           docker build -t flask-docker-demo .
 
-      # Step 5: Deploy to Server (simulated here)
+      # Step 7: Deploy to Server (simulated here)
       - name: Deploy to Server
         run: |
           echo "Deploying to server..."
