@@ -45,11 +45,25 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-
     steps:
-      # Step 1: Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
+
+      # Step 1: Install Docker and Docker Compose
+      - name: Install Docker and Docker Compose
+
+        run: |
+          sudo apt-get update
+          sudo apt-get remove -y containerd containerd.io || true
+          sudo apt-get install -y docker.io
+          sudo apt-get install -y docker-compose
+
+      # Step 2: Build and run Docker container locally using docker-compose
+      - name: Build and run Docker container locally
+        run: |
+          docker-compose build  # Build the Docker images using docker-compose
+          docker-compose up -d  # Run the containers in detached mode
+        
 
       # Step 2: Authenticate with Google Cloud
       - name: Authenticate to GCP
