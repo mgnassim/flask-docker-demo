@@ -40,14 +40,17 @@ jobs:
       - name: Run tests
         run: pytest test_app.py
 
-      # Step 7: Debug Directory (optional)
+      # Step 7: Debug Directory
       - name: Debug Directory
-        run: ls -la
+        run: |
+          ls -la ./flask-docker-demo
 
       # Step 8: Build Docker Image
       - name: Build Docker Image
+        env:
+          DOCKER_BUILDKIT: 0
         run: |
-          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/flask-docker-demo .
+          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/flask-docker-demo ./flask-docker-demo
 
   deploy:
     needs: build
