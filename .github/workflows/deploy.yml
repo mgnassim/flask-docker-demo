@@ -41,7 +41,7 @@ jobs:
       - name: List files for debug
         run: ls -al
 
-      - name: Debug: Check GCP variables
+      - name: Check GCP variables
         run: |
           echo "GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}"
 
@@ -53,13 +53,13 @@ jobs:
           docker build --progress=plain -t ${{ env.DOCKER_IMAGE_URL }}:latest -f Dockerfile .
 
       - name: Google Cloud Auth
-        uses: 'google-github-actions/auth@v2'
+        uses: "google-github-actions/auth@v2"
         with:
-          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+          credentials_json: "${{ secrets.GCP_CREDENTIALS }}"
           project_id: ${{ env.PROJECT_ID }}
 
       - name: Set up Cloud SDK
-        uses: 'google-github-actions/setup-gcloud@v2'
+        uses: "google-github-actions/setup-gcloud@v2"
 
       - name: Configure Docker
         run: |
