@@ -39,6 +39,11 @@ jobs:
       - name: List files for debug
         run: ls -al
 
+      - name: Debug: Check GCP variables
+        run: |
+          echo "GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}"
+
+
       # Step 6: Run tests
       - name: Run tests
         run: pytest test_app.py
