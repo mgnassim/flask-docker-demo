@@ -40,11 +40,6 @@ jobs:
       - name: Run tests
         run: pytest test_app.py
 
-      # Step 7: Debug Directory
-      - name: Debug Directory
-        run: |
-          ls -la ./flask-docker-demo
-
       # Step 8: Build Docker Image
       - name: Build Docker Image
         env:
