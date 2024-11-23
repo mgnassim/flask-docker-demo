@@ -36,49 +36,42 @@ jobs:
         run: |
           python -m py_compile $(find . -name "*.py")
 
-      - name: List files for debug
-        run: ls -al
-
-      - name: Check GCP variables
-        run: |
-          echo "GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }} andalso GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}"
-
       # Step 6: Run tests
       - name: Run tests
         run: pytest test_app.py
 
-      # Step 8: Build Docker Image
-      - name: Build Docker Image
+      # Step 7: List files for debug
+      - name: List files for debug
+        run: ls -al
+
+      # Step 8: Check GCP variables
+      - name: Check GCP variables
         run: |
-          docker build -t flask-docker-demo .
+          echo "GCP_PROJECT_ID: testprojectforacit-442520 and GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}"
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    environment: TestProjectForACIT
 
     env:
-      GCP_PROJECT_ID: "testprojectforacit-442520" # Set the GCP_PROJECT_ID here as a variable
+      GCP_PROJECT_ID: "testprojectforacit-442520" # Local variable for the GCP Project ID
 
     steps:
       # Step 1: Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Check GCP variables
-        run: |
-          echo "GCP_PROJECT_ID: ${{ env.GCP_PROJECT_ID }} andalso GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}"
-
-      # Step 2: Authenticate with Google Cloud
+      # Step 2: Authenticate to GCP
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
-      # Step 3: Push Docker Image to Google Artifact Registry
-      - name: Push Docker Image
+      # Step 3: Submit build to Google Cloud Build
+      - name: Submit Build to Google Cloud Build
         run: |
-          docker tag flask-docker-demo gcr.io/${{ env.GCP_PROJECT_ID }}/flask-docker-demo
-          docker push gcr.io/${{ env.GCP_PROJECT_ID }}/flask-docker-demo
+          gcloud builds submit --tag gcr.io/${{ env.GCP_PROJECT_ID }}/flask-docker-demo .
 
       # Step 4: Deploy to Google Cloud Run
       - name: Deploy to Cloud Run
