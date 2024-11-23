@@ -36,16 +36,17 @@ jobs:
         run: |
           python -m py_compile $(find . -name "*.py")
 
+      - name: List files for debug
+        run: ls -al
+
       # Step 6: Run tests
       - name: Run tests
         run: pytest test_app.py
 
       # Step 8: Build Docker Image
       - name: Build Docker Image
-        env:
-          DOCKER_BUILDKIT: 0
         run: |
-          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/flask-docker-demo .
+          docker build --progress=plain -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/flask-docker-demo .
 
   deploy:
     needs: build
