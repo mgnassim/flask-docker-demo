@@ -1,20 +1,27 @@
-name: CI/CD Pipeline for this Flask App
+name: CI/CD Pipeline for Flask App
+
+env:
+  SERVICE_NAME: flask-app
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  DOCKER_IMAGE_URL: gcr.io/${{ secrets.GCP_PROJECT_ID }}/flask-docker-demo
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build:
+  dockerize-and-deploy:
     runs-on: ubuntu-latest
-    environment: TestProjectForACIT
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - name: Set up Python
+      - name: Set up Python environment
         uses: actions/setup-python@v3
         with:
           python-version: "3.9"
@@ -34,35 +41,38 @@ jobs:
       - name: List files for debug
         run: ls -al
 
+      - name: Debug: Check GCP variables
+        run: |
+          echo "GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}"
+
       - name: Run tests
         run: pytest test_app.py
 
       - name: Build Docker Image
         run: |
-          docker build --progress=plain -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/flask-docker-demo .
+          docker build --progress=plain -t ${{ env.DOCKER_IMAGE_URL }}:latest -f Dockerfile .
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Authenticate to GCP
-        uses: google-github-actions/auth@v2
+      - name: Google Cloud Auth
+        uses: 'google-github-actions/auth@v2'
         with:
-          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+          project_id: ${{ env.PROJECT_ID }}
 
-      - name: Push Docker Image
+      - name: Set up Cloud SDK
+        uses: 'google-github-actions/setup-gcloud@v2'
+
+      - name: Configure Docker
         run: |
-          docker tag flask-docker-demo gcr.io/${{ secrets.GCP_PROJECT_ID }}/flask-docker-demo
-          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/flask-docker-demo
+          gcloud auth configure-docker
+
+      - name: Push Docker Image to Google Cloud
+        run: |
+          docker push ${{ env.DOCKER_IMAGE_URL }}:latest
 
       - name: Deploy to Cloud Run
         run: |
-          gcloud run deploy flask-app \
-            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/flask-docker-demo \
-            --region us-central1 \
+          gcloud run deploy ${{ env.SERVICE_NAME }} \
+            --image ${{ env.DOCKER_IMAGE_URL }}:latest \
             --platform managed \
+            --region us-central1 \
             --allow-unauthenticated
