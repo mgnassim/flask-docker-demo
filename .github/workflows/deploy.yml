@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: TestProjectForACIT # THIS WAS MISSING
+    environment: TestProjectForACIT
 
     steps:
       # Step 1: Checkout code
@@ -27,16 +27,24 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Step 4: Run Python syntax check
+      # Step 4: Verify Installed Packages
+      - name: Verify Installed Packages
+        run: pip list
+
+      # Step 5: Run Python syntax check
       - name: Check Python Syntax
         run: |
           python -m py_compile $(find . -name "*.py")
 
-      # Step 5: Run tests
+      # Step 6: Run tests
       - name: Run tests
         run: pytest test_app.py
 
-      # Step 6: Build Docker image
+      # Step 7: Debug Directory (optional)
+      - name: Debug Directory
+        run: ls -la
+
+      # Step 8: Build Docker Image
       - name: Build Docker Image
         run: |
           docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/flask-docker-demo .
