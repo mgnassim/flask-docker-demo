@@ -50,7 +50,7 @@ jobs:
       # Step 8: Build Docker Image
       - name: Build Docker Image
         run: |
-          docker build --progress=plain -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/flask-docker-demo .
+          docker build -t flask-docker-demo .
 
   deploy:
     needs: build
