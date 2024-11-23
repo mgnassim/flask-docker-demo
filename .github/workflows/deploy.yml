@@ -61,6 +61,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Check GCP variables
+        run: |
+          echo "GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }} andalso GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}"
+
       # Step 2: Authenticate with Google Cloud
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v2
