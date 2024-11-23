@@ -56,6 +56,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
 
+    env:
+      GCP_PROJECT_ID: "testprojectforacit-442520" # Set the GCP_PROJECT_ID here as a variable
+
     steps:
       # Step 1: Checkout code
       - name: Checkout code
@@ -63,7 +66,7 @@ jobs:
 
       - name: Check GCP variables
         run: |
-          echo "GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }} andalso GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}"
+          echo "GCP_PROJECT_ID: ${{ env.GCP_PROJECT_ID }} andalso GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}"
 
       # Step 2: Authenticate with Google Cloud
       - name: Authenticate to GCP
@@ -74,14 +77,14 @@ jobs:
       # Step 3: Push Docker Image to Google Artifact Registry
       - name: Push Docker Image
         run: |
-          docker tag flask-docker-demo gcr.io/${{ secrets.GCP_PROJECT_ID }}/flask-docker-demo
-          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/flask-docker-demo
+          docker tag flask-docker-demo gcr.io/${{ env.GCP_PROJECT_ID }}/flask-docker-demo
+          docker push gcr.io/${{ env.GCP_PROJECT_ID }}/flask-docker-demo
 
       # Step 4: Deploy to Google Cloud Run
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy flask-app \
-            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/flask-docker-demo \
+            --image gcr.io/${{ env.GCP_PROJECT_ID }}/flask-docker-demo \
             --region us-central1 \
             --platform managed \
             --allow-unauthenticated
