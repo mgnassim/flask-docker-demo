@@ -15,6 +15,7 @@ on:
 
 jobs:
   dockerize-and-deploy:
+    environment: TestProjectForACIT
     runs-on: ubuntu-latest
 
     steps:
