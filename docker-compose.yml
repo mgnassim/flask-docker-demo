@@ -1,7 +1,17 @@
-version: "3"
+version: "3.8"
 services:
   app:
-    build: . # Use the Dockerfile in the current directory to build the image
+    build: .
     ports:
-      - "5001:5000" # Expose the Flask app on port 5000
-    restart: always # Ensure the container restarts if it stops
+      - "8080:8080"
+    deploy:
+      replicas: 3 # Scaling the service to 3 replicas for Docker Swarm
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "512M"
+        reservations:
+          cpus: "0.25"
+          memory: "256M"
+      restart_policy:
+        condition: on-failure
