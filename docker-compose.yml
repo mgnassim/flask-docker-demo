@@ -16,6 +16,8 @@ services:
       dockerfile: ./frontend/Dockerfile # Assuming this Dockerfile is in the frontend folder
     ports:
       - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf # Mount the nginx.conf file
     networks:
       - canario-network
 
