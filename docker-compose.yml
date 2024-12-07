@@ -10,7 +10,7 @@ services:
     networks:
       - canario-network
 
-  frontend:
+  templates:
     build:
       context: .
       dockerfile: ./templates/Dockerfile # This Dockerfile is in the frontend folder
