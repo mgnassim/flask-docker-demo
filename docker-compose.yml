@@ -1,17 +1,24 @@
 version: "3.8"
+
 services:
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: ./Dockerfile # Assuming this Dockerfile is in the root directory
     ports:
       - "8080:8080"
-    deploy:
-      replicas: 3 # Scaling the service to 3 replicas for Docker Swarm
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: "512M"
-        reservations:
-          cpus: "0.25"
-          memory: "256M"
-      restart_policy:
-        condition: on-failure
+    networks:
+      - canario-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile # Assuming this Dockerfile is in the frontend folder
+    ports:
+      - "80:80"
+    networks:
+      - canario-network
+
+networks:
+  canario-network:
+    driver: bridge
