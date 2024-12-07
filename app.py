@@ -2,30 +2,35 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 
-# Dynamic home route
 @app.route('/')
 def home():
-    return render_template('index.html', title="Canario - Home", intro_text="Transforming Ideas into Digital Art")
+    return render_template('index.html')
 
-# Dynamic about page route
 @app.route('/about')
 def about():
-    return render_template('about.html', title="Canario - About", story="Our Story", values=["Creativity", "Reliability", "Customer Satisfaction"])
+    # You can pass dynamic content to the templates here
+    about_info = {
+        "story": "Canario was founded on the belief that websites should be as unique as the people they represent.",
+        "values": [
+            "Creativity: Every project is approached with fresh, innovative ideas.",
+            "Reliability: Our websites are built to last, with no compromises.",
+            "Customer Satisfaction: We are committed to meeting the needs of our clients and exceeding expectations."
+        ]
+    }
+    return render_template('about.html', about_info=about_info)
 
-# Dynamic contact page route
 @app.route('/contact')
 def contact():
-    return render_template('contact.html', title="Canario - Contact", contact_message="If you're interested in working with Canario, we'd love to hear from you!")
+    return render_template('contact.html')
 
-# Dynamic portfolio page route
 @app.route('/portfolio')
 def portfolio():
     projects = [
-        {"name": "Project 1", "description": "Custom website for a famous musician.", "image": "https://via.placeholder.com/300x200"},
-        {"name": "Project 2", "description": "Website redesign for a luxury brand.", "image": "https://via.placeholder.com/300x200"},
-        {"name": "Project 3", "description": "Web app for a high-profile sports team.", "image": "https://via.placeholder.com/300x200"}
+        {"title": "Project 1", "description": "Custom website for a famous musician.", "img_url": "https://via.placeholder.com/300x200"},
+        {"title": "Project 2", "description": "Website redesign for a luxury brand.", "img_url": "https://via.placeholder.com/300x200"},
+        {"title": "Project 3", "description": "Web app for a high-profile sports team.", "img_url": "https://via.placeholder.com/300x200"}
     ]
-    return render_template('portfolio.html', title="Canario - Portfolio", projects=projects)
+    return render_template('portfolio.html', projects=projects)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)

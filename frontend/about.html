@@ -1,50 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Canario - About</title>
-		<link rel="stylesheet" href="style.css" />
-	</head>
-	<body>
-		<header>
-			<h1>About Canario</h1>
-			<nav>
-				<ul>
-					<li><a href="index.html">Home</a></li>
-					<li><a href="about.html">About</a></li>
-					<li><a href="portfolio.html">Portfolio</a></li>
-					<li><a href="contact.html">Contact</a></li>
-				</ul>
-			</nav>
-		</header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canario - About</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>About Canario</h1>
+      <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/portfolio">Portfolio</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
 
-		<section class="about">
-			<h2>Our Story</h2>
-			<p>
-				Canario was founded on the belief that websites should be as unique as
-				the people they represent. We have worked with top celebrities and
-				artists to create visually stunning and functionally seamless websites
-				that help them stand out in the digital space.
-			</p>
+    <section class="about">
+      <h2>Our Story</h2>
+      <p>{{ about_info['story'] }}</p>
 
-			<h2>Our Values</h2>
-			<ul>
-				<li>
-					Creativity: Every project is approached with fresh, innovative ideas.
-				</li>
-				<li>
-					Reliability: Our websites are built to last, with no compromises.
-				</li>
-				<li>
-					Customer Satisfaction: We are committed to meeting the needs of our
-					clients and exceeding expectations.
-				</li>
-			</ul>
-		</section>
+      <h2>Our Values</h2>
+      <ul>
+        {% for value in about_info['values'] %}
+          <li>{{ value }}</li>
+        {% endfor %}
+      </ul>
+    </section>
 
-		<footer>
-			<p>&copy; 2024 Canario - All rights reserved.</p>
-		</footer>
-	</body>
+    <footer>
+      <p>&copy; 2024 Canario - All rights reserved.</p>
+    </footer>
+  </body>
 </html>
