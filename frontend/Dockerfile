@@ -5,7 +5,7 @@ FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
 
 # Copy the static website files into the container's Nginx directory
-COPY ./frontend/ ./
+COPY ./frontend/* /usr/share/nginx/html/
 
 # Expose port 80 to the outside world
 EXPOSE 80
