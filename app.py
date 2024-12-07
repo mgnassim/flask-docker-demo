@@ -8,7 +8,6 @@ def home():
 
 @app.route('/about')
 def about():
-    # You can pass dynamic content to the templates here
     about_info = {
         "story": "Canario was founded on the belief that websites should be as unique as the people they represent.",
         "values": [
