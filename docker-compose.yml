@@ -22,6 +22,15 @@ services:
     networks:
       - canario-network
 
+  database:
+    image: google/cloud-sdk:latest # This is an example; adjust based on your database choice
+    networks:
+      - canario-network
+    environment:
+      - DB_HOST=db # Adjust as needed based on the database service name
+    expose:
+      - "8081" # Assuming a custom port or using Cloud Firestore's default ports
+
 networks:
   canario-network:
     driver: bridge
