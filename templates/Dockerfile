@@ -4,11 +4,9 @@ FROM nginx:alpine
 # Set the working directory inside the container
 WORKDIR /usr/share/nginx/html
 
-# Copy static files into the Nginx directory
-COPY . ./
-
-# Set environment variable for Nginx configuration
-ENV NGINX_CONF_PATH /etc/nginx/nginx.conf
+# Copy only the necessary files: static files and nginx config
+COPY static /usr/share/nginx/html/static
+COPY templates/nginx.conf /etc/nginx/nginx.conf
 
 # Expose port 80 to the outside world
 EXPOSE 80
