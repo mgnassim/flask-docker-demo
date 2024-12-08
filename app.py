@@ -1,18 +1,15 @@
 from flask import Flask, render_template, request, redirect
-import psycopg2
-import os
+import firebase_admin
+from firebase_admin import credentials, firestore
+
+# Initialize the app with a service account key
+cred = credentials.Certificate('path-to-your-service-account-key.json')  # Ensure this path is correct
+firebase_admin.initialize_app(cred)
+
+# Create a Firestore client
+db = firestore.client()
 
 app = Flask(__name__, static_folder='templates/static')
-
-# Database connection
-def get_db_connection():
-    conn = psycopg2.connect(
-        dbname=os.getenv('POSTGRES_DB', 'contactdb'),
-        user=os.getenv('POSTGRES_USER', 'user'),
-        password=os.getenv('POSTGRES_PASSWORD', 'password'),
-        host='db'  # Refers to the database container
-    )
-    return conn
 
 @app.route('/')
 def home():
@@ -37,13 +34,13 @@ def contact():
         email = request.form['email']
         message = request.form['message']
         
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute("INSERT INTO contacts (name, email, message) VALUES (%s, %s, %s)", 
-                    (name, email, message))
-        conn.commit()
-        cur.close()
-        conn.close()
+        # Store data in Firestore
+        doc_ref = db.collection('contacts').add({
+            'name': name,
+            'email': email,
+            'message': message
+        })
+
         return redirect('/')
     return render_template('contact.html')
 
