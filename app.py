@@ -16,6 +16,14 @@ def get_cached_data(key):
     cached_data = redis_client.get(key)
     return json.loads(cached_data) if cached_data else None
 
+@app.route('/test-redis')
+def test_redis():
+    try:
+        redis_client.ping()  # Checks if Redis is connected
+        return "Redis is connected!"
+    except redis.exceptions.ConnectionError:
+        return "Failed to connect to Redis!"
+
 @app.route('/')
 def home():
     return render_template('index.html')
