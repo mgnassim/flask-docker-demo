@@ -5,7 +5,7 @@ FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
 
 # Copy static files into the Nginx directory
-COPY ./templates/ ./
+COPY . ./
 
 # Set environment variable for Nginx configuration
 ENV NGINX_CONF_PATH /etc/nginx/nginx.conf
