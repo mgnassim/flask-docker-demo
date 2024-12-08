@@ -1,6 +1,18 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
+import psycopg2
+import os
 
 app = Flask(__name__, static_folder='templates/static')
+
+# Database connection
+def get_db_connection():
+    conn = psycopg2.connect(
+        dbname=os.getenv('POSTGRES_DB', 'contactdb'),
+        user=os.getenv('POSTGRES_USER', 'user'),
+        password=os.getenv('POSTGRES_PASSWORD', 'password'),
+        host='db'  # Refers to the database container
+    )
+    return conn
 
 @app.route('/')
 def home():
@@ -18,8 +30,21 @@ def about():
     }
     return render_template('about.html', about_info=about_info)
 
-@app.route('/contact')
+@app.route('/contact', methods=['GET', 'POST'])
 def contact():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        message = request.form['message']
+        
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("INSERT INTO contacts (name, email, message) VALUES (%s, %s, %s)", 
+                    (name, email, message))
+        conn.commit()
+        cur.close()
+        conn.close()
+        return redirect('/')
     return render_template('contact.html')
 
 @app.route('/portfolio')
