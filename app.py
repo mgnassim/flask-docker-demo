@@ -1,4 +1,11 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
+import firebase_admin
+from firebase_admin import credentials, firestore
+
+# Initialize Firestore
+cred = credentials.Certificate('path/to/your/firebase-adminsdk.json')  # Replace with the path to your Firestore credentials file
+firebase_admin.initialize_app(cred)
+db = firestore.client()
 
 app = Flask(__name__, static_folder='templates/static')
 
@@ -18,8 +25,21 @@ def about():
     }
     return render_template('about.html', about_info=about_info)
 
-@app.route('/contact')
+@app.route('/contact', methods=['GET', 'POST'])
 def contact():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        message = request.form['message']
+
+        # Add data to Firestore
+        doc_ref = db.collection('messages').add({
+            'name': name,
+            'email': email,
+            'message': message
+        })
+        return redirect(url_for('contact'))
+
     return render_template('contact.html')
 
 @app.route('/portfolio')
