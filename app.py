@@ -25,9 +25,9 @@ def contact():
 @app.route('/portfolio')
 def portfolio():
     projects = [
-        {"title": "Project 1", "description": "Custom website for a famous musician.", "img_url": "https://via.placeholder.com/300x200"},
-        {"title": "Project 2", "description": "Website redesign for a luxury brand.", "img_url": "https://via.placeholder.com/300x200"},
-        {"title": "Project 3", "description": "Web app for a high-profile sports team.", "img_url": "https://via.placeholder.com/300x200"}
+        {"title": "Project 1", "description": "Custom website for a famous musician.", "img_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-lacdSV_hfHAguoMmCKYJ9cyvVTJkyEP-ZQ&s"},
+        {"title": "Project 2", "description": "Website redesign for a luxury brand.", "img_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-lacdSV_hfHAguoMmCKYJ9cyvVTJkyEP-ZQ&s"},
+        {"title": "Project 3", "description": "Web app for a high-profile sports team.", "img_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-lacdSV_hfHAguoMmCKYJ9cyvVTJkyEP-ZQ&s"}
     ]
     return render_template('portfolio.html', projects=projects)
 
