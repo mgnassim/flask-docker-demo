@@ -1,10 +1,6 @@
 from flask import Flask, render_template
-from google.cloud import firestore
 
 app = Flask(__name__, static_folder='templates/static')
-
-# Initialize Firestore DB
-db = firestore.Client()
 
 @app.route('/')
 def home():
@@ -28,9 +24,13 @@ def contact():
 
 @app.route('/portfolio')
 def portfolio():
-    projects_ref = db.collection('projects')
-    projects = [doc.to_dict() for doc in projects_ref.stream()]
+    projects = [
+        {"title": "Project 1", "description": "Custom website for a famous musician.", "img_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-lacdSV_hfHAguoMmCKYJ9cyvVTJkyEP-ZQ&s"},
+        {"title": "Project 2", "description": "Website redesign for a luxury brand.", "img_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-lacdSV_hfHAguoMmCKYJ9cyvVTJkyEP-ZQ&s"},
+        {"title": "Project 3", "description": "Web app for a high-profile sports team.", "img_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-lacdSV_hfHAguoMmCKYJ9cyvVTJkyEP-ZQ&s"}
+    ]
     return render_template('portfolio.html', projects=projects)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
+
