@@ -79,6 +79,7 @@ jobs:
           gcloud run deploy flask-app \
             --image gcr.io/${{ env.GCP_PROJECT_ID }}/flask-docker-demo \
             --region us-central1 \
+            --vpc-connector flask-docker-demo \
             --platform managed \
             --allow-unauthenticated \
             --timeout 600
