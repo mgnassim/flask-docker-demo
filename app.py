@@ -5,7 +5,7 @@ import json
 app = Flask(__name__, static_folder='templates/static')
 
 # Initialize Redis connection
-redis_client = redis.StrictRedis(host='redis', port=6379, decode_responses=True)
+redis_client = redis.StrictRedis(host='10.121.147.134:6379', port=6379, decode_responses=True)
 
 def cache_data(key, data, ttl=300):
     """Cache data in Redis with a Time-To-Live (TTL)."""
